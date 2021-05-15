@@ -6,7 +6,6 @@ feature_transform:
     log_target: True
     features: [
         "classe",
-        #"description",
         "dormitorios",
         "banheiros",
         "vagas_na_garagem",
@@ -22,7 +21,6 @@ feature_transform:
         "apartamento_por_andar",
         "quantidade_de_andares",
         "elevador_de_servico",
-        #"area_construida",
         "salao_de_festa",
         "iptu",
         "lat",
@@ -39,7 +37,7 @@ model:
     regressor: GradientBoostingRegressor
     loss: huber
     random_state: 42
-    n_estimators: 2000
+    n_estimators: 3000
     alpha: 0.95
 
 test:

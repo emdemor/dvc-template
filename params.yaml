@@ -1,0 +1,43 @@
+
+data_load:
+    raw_data_path: data/imoveis_pocos.csv
+
+feature_transform:
+    log_target: True
+    features: [
+        "classe",
+        #"description",
+        "dormitorios",
+        "banheiros",
+        "vagas_na_garagem",
+        "tipo_do_imovel",
+        "bairro",
+        "area_terreno",
+        "area_util",
+        "condominio",
+        "torres",
+        "portaria_hrs",
+        "elevador_social",
+        "suites",
+        "apartamento_por_andar",
+        "quantidade_de_andares",
+        "elevador_de_servico",
+        #"area_construida",
+        "salao_de_festa",
+        "iptu",
+        "lat",
+        "long",
+        "dist_centro"
+    ]
+    features_to_encode: ["classe", "bairro", "tipo_do_imovel"]
+
+splitting:
+    test_size: 0.25
+    random_state: 42
+
+model:
+    regressor: GradientBoostingRegressor
+    loss: huber
+    random_state: 42
+    n_estimators: 290
+    alpha: 0.9

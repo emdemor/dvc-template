@@ -13,11 +13,11 @@ stages:
     deps:
     - pkl/raw_data.pkl
     - src/feature_transform.py
+    params:
+    - feature_transform
     outs:
     - pkl/features.pkl
     - pkl/targets.pkl
-    params:
-    - feature_transform
   splitting:
     cmd: python src/splitting.py --config=params.yaml
     deps:
@@ -41,3 +41,14 @@ stages:
     - model
     outs:
     - pkl/model.pkl
+  model_testing:
+    cmd: python src/model_testing.py --config=params.yaml
+    deps:
+    - pkl/features_test.pkl
+    - pkl/model.pkl
+    - pkl/targets_test.pkl
+    - src/model_testing.py
+    params:
+    - test
+    outs:
+    - data/metrics.csv

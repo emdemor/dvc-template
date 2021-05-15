@@ -41,3 +41,7 @@ model:
     random_state: 42
     n_estimators: 290
     alpha: 0.9
+
+test:
+    mean_absolute_error: True
+    r2_score: True

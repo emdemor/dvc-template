@@ -14,7 +14,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 # from sklearn.metrics import mean_absolute_error as mae, r2_score
 
 
-def splitting(config_path: Text) -> None:
+def training(config_path: Text) -> None:
     """Load raw data
 
     Args:
@@ -50,4 +50,4 @@ if __name__ == "__main__":
     args_parser = argparse.ArgumentParser()
     args_parser.add_argument("--config", dest="config", required=True)
     args = args_parser.parse_args()
-    splitting(config_path=args.config)
+    training(config_path=args.config)

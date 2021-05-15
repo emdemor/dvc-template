@@ -37,3 +37,14 @@ dvc run --force -n model_training \
         -p model \
         python src/model_training.py \
         --config=params.yaml
+
+
+dvc run --force -n model_testing \
+        -d pkl/model.pkl \
+        -d pkl/features_test.pkl \
+        -d pkl/targets_test.pkl \
+        -d src/model_testing.py \
+        -o data/metrics.csv \
+        -p test \
+        python src/model_testing.py \
+        --config=params.yaml

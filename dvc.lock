@@ -111,12 +111,12 @@ stages:
           regressor: GradientBoostingRegressor
           loss: huber
           random_state: 42
-          n_estimators: 2000
+          n_estimators: 1000
           alpha: 0.95
     outs:
     - path: pkl/model.pkl
-      md5: e4d44932a5eda3fdbfafe1903955d60e
-      size: 2041221
+      md5: 9e75f017fa26be5e3362393e1e0f089c
+      size: 1004684
   model_testing:
     cmd: python src/model_testing.py --config=params.yaml
     deps:
@@ -124,8 +124,8 @@ stages:
       md5: 137b108011bb315c69b7c66b6036d443
       size: 63237
     - path: pkl/model.pkl
-      md5: e4d44932a5eda3fdbfafe1903955d60e
-      size: 2041221
+      md5: 9e75f017fa26be5e3362393e1e0f089c
+      size: 1004684
     - path: pkl/targets_test.pkl
       md5: 99b0a0bdc353b093d7eada561ac34724
       size: 1690
@@ -139,5 +139,5 @@ stages:
           r2_score: true
     outs:
     - path: data/metrics.csv
-      md5: bb298dd1f35085314ca2d3a4c7af6648
-      size: 72
+      md5: 48efb1e197e7d18880e80edd7cfc1bab
+      size: 73

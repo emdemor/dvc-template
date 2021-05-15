@@ -39,7 +39,7 @@ model:
     regressor: GradientBoostingRegressor
     loss: huber
     random_state: 42
-    n_estimators: 290
+    n_estimators: 400
     alpha: 0.9
 
 test:

@@ -20,13 +20,13 @@ def splitting(config_path: Text) -> None:
 
     config = yaml.safe_load(open(config_path))
     test_size = config["splitting"]["test_size"]
-    test_size = config["splitting"]["random_state"]
+    random_state = config["splitting"]["random_state"]
 
     X = load_pickle("pkl/features.pkl")
     y = load_pickle("pkl/targets.pkl")
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=42
+        X, y, test_size=test_size, random_state=random_state
     )
 
     dump_pickle(X_train, "pkl/features_train.pkl")

@@ -73,8 +73,8 @@ stages:
       md5: 69383daf9dd2ab159865f2a9f60e0a97
       size: 22862
     - path: src/splitting.py
-      md5: cbe4d304662f688012206acace06d61b
-      size: 1581
+      md5: 4341f8cc019bf5f635c7b9f705f51947
+      size: 1594
     params:
       params.yaml:
         splitting:
@@ -82,26 +82,26 @@ stages:
           random_state: 42
     outs:
     - path: pkl/features_test.pkl
-      md5: 137b108011bb315c69b7c66b6036d443
-      size: 63237
+      md5: a6cb23a132c81fc98fc937f7e91ebec8
+      size: 323310
     - path: pkl/features_train.pkl
-      md5: e96d95372a70f16459d9c7969ce915fc
-      size: 1219088
+      md5: 390fd19e351603404103104872251e5a
+      size: 959024
     - path: pkl/targets_test.pkl
-      md5: 99b0a0bdc353b093d7eada561ac34724
-      size: 1690
+      md5: adc396de6128e296c0fa877fd178402a
+      size: 6226
     - path: pkl/targets_train.pkl
-      md5: 88d3163975836119da07318d771f8f3e
-      size: 21854
+      md5: 6de404eff758ba10592c613becc13c3d
+      size: 17318
   model_training:
     cmd: python src/model_training.py --config=params.yaml
     deps:
     - path: pkl/features_train.pkl
-      md5: e96d95372a70f16459d9c7969ce915fc
-      size: 1219088
+      md5: 390fd19e351603404103104872251e5a
+      size: 959024
     - path: pkl/targets_train.pkl
-      md5: 88d3163975836119da07318d771f8f3e
-      size: 21854
+      md5: 6de404eff758ba10592c613becc13c3d
+      size: 17318
     - path: src/model_training.py
       md5: 123e1073b214fdb9e2e4fd9ce3671421
       size: 1400
@@ -111,24 +111,24 @@ stages:
           regressor: GradientBoostingRegressor
           loss: huber
           random_state: 42
-          n_estimators: 1000
+          n_estimators: 3000
           alpha: 0.95
     outs:
     - path: pkl/model.pkl
-      md5: 9e75f017fa26be5e3362393e1e0f089c
-      size: 1004684
+      md5: 29716114d39695b3e91be39ade1b0c77
+      size: 3081079
   model_testing:
     cmd: python src/model_testing.py --config=params.yaml
     deps:
     - path: pkl/features_test.pkl
-      md5: 137b108011bb315c69b7c66b6036d443
-      size: 63237
+      md5: a6cb23a132c81fc98fc937f7e91ebec8
+      size: 323310
     - path: pkl/model.pkl
-      md5: 9e75f017fa26be5e3362393e1e0f089c
-      size: 1004684
+      md5: 29716114d39695b3e91be39ade1b0c77
+      size: 3081079
     - path: pkl/targets_test.pkl
-      md5: 99b0a0bdc353b093d7eada561ac34724
-      size: 1690
+      md5: adc396de6128e296c0fa877fd178402a
+      size: 6226
     - path: src/model_testing.py
       md5: 0485292e39480653deb0caa20a3259e4
       size: 1449
@@ -139,5 +139,5 @@ stages:
           r2_score: true
     outs:
     - path: data/metrics.csv
-      md5: 48efb1e197e7d18880e80edd7cfc1bab
+      md5: bd7872f92a06c2604f34c276153ba228
       size: 73

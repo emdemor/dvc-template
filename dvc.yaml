@@ -1,0 +1,54 @@
+stages:
+  data_load:
+    cmd: python src/data_load.py --config=params.yaml
+    deps:
+    - data/imoveis_pocos.csv
+    - src/data_load.py
+    params:
+    - data_load
+    outs:
+    - pkl/raw_data.pkl
+  feature_transform:
+    cmd: python src/feature_transform.py --config=params.yaml
+    deps:
+    - pkl/raw_data.pkl
+    - src/feature_transform.py
+    params:
+    - feature_transform
+    outs:
+    - pkl/features.pkl
+    - pkl/targets.pkl
+  splitting:
+    cmd: python src/splitting.py --config=params.yaml
+    deps:
+    - pkl/features.pkl
+    - pkl/targets.pkl
+    - src/splitting.py
+    params:
+    - splitting
+    outs:
+    - pkl/features_test.pkl
+    - pkl/features_train.pkl
+    - pkl/targets_test.pkl
+    - pkl/targets_train.pkl
+  model_training:
+    cmd: python src/model_training.py --config=params.yaml
+    deps:
+    - pkl/features_train.pkl
+    - pkl/targets_train.pkl
+    - src/model_training.py
+    params:
+    - model
+    outs:
+    - pkl/model.pkl
+  model_testing:
+    cmd: python src/model_testing.py --config=params.yaml
+    deps:
+    - pkl/features_test.pkl
+    - pkl/model.pkl
+    - pkl/targets_test.pkl
+    - src/model_testing.py
+    params:
+    - test
+    outs:
+    - data/metrics.csv

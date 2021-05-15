@@ -1,0 +1,143 @@
+schema: '2.0'
+stages:
+  data_load:
+    cmd: python src/data_load.py --config=params.yaml
+    deps:
+    - path: data/imoveis_pocos.csv
+      md5: 6fa699df52c4baaa1f31d23f24d310cc
+      size: 101157
+    - path: src/data_load.py
+      md5: df5a24306dbb05336cd071c57b52ca6f
+      size: 746
+    params:
+      params.yaml:
+        data_load:
+          raw_data_path: data/imoveis_pocos.csv
+    outs:
+    - path: pkl/raw_data.pkl
+      md5: a7cd955eed8afdb0c6689db1510206ed
+      size: 149972
+  feature_transform:
+    cmd: python src/feature_transform.py --config=params.yaml
+    deps:
+    - path: pkl/raw_data.pkl
+      md5: a7cd955eed8afdb0c6689db1510206ed
+      size: 149972
+    - path: src/feature_transform.py
+      md5: 9f284fda51fdb2f793f43d65294b66d1
+      size: 2745
+    params:
+      params.yaml:
+        feature_transform:
+          log_target: true
+          features:
+          - classe
+          - dormitorios
+          - banheiros
+          - vagas_na_garagem
+          - tipo_do_imovel
+          - bairro
+          - area_terreno
+          - area_util
+          - condominio
+          - torres
+          - portaria_hrs
+          - elevador_social
+          - suites
+          - apartamento_por_andar
+          - quantidade_de_andares
+          - elevador_de_servico
+          - salao_de_festa
+          - iptu
+          - lat
+          - long
+          - dist_centro
+          features_to_encode:
+          - classe
+          - bairro
+          - tipo_do_imovel
+    outs:
+    - path: pkl/features.pkl
+      md5: d61643a96c1c62ecfe278fedfafc05f0
+      size: 1276880
+    - path: pkl/targets.pkl
+      md5: 69383daf9dd2ab159865f2a9f60e0a97
+      size: 22862
+  splitting:
+    cmd: python src/splitting.py --config=params.yaml
+    deps:
+    - path: pkl/features.pkl
+      md5: d61643a96c1c62ecfe278fedfafc05f0
+      size: 1276880
+    - path: pkl/targets.pkl
+      md5: 69383daf9dd2ab159865f2a9f60e0a97
+      size: 22862
+    - path: src/splitting.py
+      md5: cbe4d304662f688012206acace06d61b
+      size: 1581
+    params:
+      params.yaml:
+        splitting:
+          test_size: 0.25
+          random_state: 42
+    outs:
+    - path: pkl/features_test.pkl
+      md5: 137b108011bb315c69b7c66b6036d443
+      size: 63237
+    - path: pkl/features_train.pkl
+      md5: e96d95372a70f16459d9c7969ce915fc
+      size: 1219088
+    - path: pkl/targets_test.pkl
+      md5: 99b0a0bdc353b093d7eada561ac34724
+      size: 1690
+    - path: pkl/targets_train.pkl
+      md5: 88d3163975836119da07318d771f8f3e
+      size: 21854
+  model_training:
+    cmd: python src/model_training.py --config=params.yaml
+    deps:
+    - path: pkl/features_train.pkl
+      md5: e96d95372a70f16459d9c7969ce915fc
+      size: 1219088
+    - path: pkl/targets_train.pkl
+      md5: 88d3163975836119da07318d771f8f3e
+      size: 21854
+    - path: src/model_training.py
+      md5: 123e1073b214fdb9e2e4fd9ce3671421
+      size: 1400
+    params:
+      params.yaml:
+        model:
+          regressor: GradientBoostingRegressor
+          loss: huber
+          random_state: 42
+          n_estimators: 2000
+          alpha: 0.95
+    outs:
+    - path: pkl/model.pkl
+      md5: e4d44932a5eda3fdbfafe1903955d60e
+      size: 2041221
+  model_testing:
+    cmd: python src/model_testing.py --config=params.yaml
+    deps:
+    - path: pkl/features_test.pkl
+      md5: 137b108011bb315c69b7c66b6036d443
+      size: 63237
+    - path: pkl/model.pkl
+      md5: e4d44932a5eda3fdbfafe1903955d60e
+      size: 2041221
+    - path: pkl/targets_test.pkl
+      md5: 99b0a0bdc353b093d7eada561ac34724
+      size: 1690
+    - path: src/model_testing.py
+      md5: 0485292e39480653deb0caa20a3259e4
+      size: 1449
+    params:
+      params.yaml:
+        test:
+          mean_absolute_error: true
+          r2_score: true
+    outs:
+    - path: data/metrics.csv
+      md5: bb298dd1f35085314ca2d3a4c7af6648
+      size: 72

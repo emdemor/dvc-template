@@ -1,0 +1,130 @@
+schema: '2.0'
+stages:
+  feature_transform:
+    cmd: python source/stg01_feature_transform.py --config=params.yaml
+    deps:
+    - path: data/imoveis_pocos.csv
+      md5: 6fa699df52c4baaa1f31d23f24d310cc
+      size: 101157
+    - path: source/stg01_feature_transform.py
+      md5: 0876afb3aef987478a5279535712d8ef
+      size: 3938
+    params:
+      params.yaml:
+        feature_transform:
+          raw_data_path: data/imoveis_pocos.csv
+          log_target: true
+          features:
+          - classe
+          - dormitorios
+          - banheiros
+          - vagas_na_garagem
+          - tipo_do_imovel
+          - bairro
+          - area_terreno
+          - area_util
+          - condominio
+          - torres
+          - portaria_hrs
+          - elevador_social
+          - suites
+          - apartamento_por_andar
+          - quantidade_de_andares
+          - elevador_de_servico
+          - salao_de_festa
+          - iptu
+          - lat
+          - long
+          - dist_centro
+          features_to_encode:
+          - classe
+          - bairro
+          - tipo_do_imovel
+    outs:
+    - path: stages/X.csv
+      md5: c55eefda10ca30790c62ccf6e80695e7
+      size: 849037
+    - path: stages/feature_transform_pipeline.pkl
+      md5: 270d62c57a3913f8914df686dd109689
+      size: 172037
+    - path: stages/y.csv
+      md5: a78c6724157e9868e4b39418224cb48d
+      size: 17430
+  splitting:
+    cmd: python source/stg02_splitting.py --config=params.yaml
+    deps:
+    - path: source/stg02_splitting.py
+      md5: 83db7f962edaf1354f401d5a0676a58a
+      size: 1585
+    - path: stages/X.csv
+      md5: c55eefda10ca30790c62ccf6e80695e7
+      size: 849037
+    - path: stages/y.csv
+      md5: a78c6724157e9868e4b39418224cb48d
+      size: 17430
+    params:
+      params.yaml:
+        splitting:
+          test_size: 0.25
+          random_state: 42
+    outs:
+    - path: stages/X_test.csv
+      md5: 132a38a676dad70d7998ec33324f0d39
+      size: 210997
+    - path: stages/X_train.csv
+      md5: e7c72d6de7ada2290c2196358102b32a
+      size: 627083
+    - path: stages/y_test.csv
+      md5: 331257ae80b44d3f63ff8c63f6c583f5
+      size: 4352
+    - path: stages/y_train.csv
+      md5: 3bdd8a6877e81b19da1cfa747a4597e5
+      size: 13038
+  model_training:
+    cmd: python source/stg03_model_training.py --config=params.yaml
+    deps:
+    - path: source/stg03_model_training.py
+      md5: b0787064c888a5e3d33d1d46129eea23
+      size: 1578
+    - path: stages/X_train.csv
+      md5: e7c72d6de7ada2290c2196358102b32a
+      size: 627083
+    - path: stages/y_train.csv
+      md5: 3bdd8a6877e81b19da1cfa747a4597e5
+      size: 13038
+    params:
+      params.yaml:
+        model:
+          regressor: GradientBoostingRegressor
+          loss: huber
+          random_state: 42
+          n_estimators: 1010
+          alpha: 0.95
+    outs:
+    - path: stages/model.pkl
+      md5: 8416910999d3b6c418cdcbc08bbd3f27
+      size: 986095
+  model_testing:
+    cmd: python source/stg04_model_testing.py --config=params.yaml
+    deps:
+    - path: source/stg04_model_testing.py
+      md5: b71506df82baa30c743d3d3ef2504ebd
+      size: 1497
+    - path: stages/X_test.csv
+      md5: 132a38a676dad70d7998ec33324f0d39
+      size: 210997
+    - path: stages/model.pkl
+      md5: 8416910999d3b6c418cdcbc08bbd3f27
+      size: 986095
+    - path: stages/y_test.csv
+      md5: 331257ae80b44d3f63ff8c63f6c583f5
+      size: 4352
+    params:
+      params.yaml:
+        test:
+          mean_absolute_error: true
+          r2_score: true
+    outs:
+    - path: stages/metrics.json
+      md5: e984ad178a4d3fd3eef6eb086dd0a687
+      size: 67

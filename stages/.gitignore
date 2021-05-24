@@ -1,0 +1,10 @@
+/X.csv
+/y.csv
+/feature_transform_pipeline.pkl
+/X_train.csv
+/y_train.csv
+/X_test.csv
+/y_test.csv
+/model.pkl
+/metrics.csv
+/metrics.json

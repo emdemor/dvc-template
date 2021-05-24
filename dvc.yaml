@@ -1,0 +1,46 @@
+stages:
+  feature_transform:
+    cmd: python source/stg01_feature_transform.py --config=params.yaml
+    deps:
+    - data/imoveis_pocos.csv
+    - source/stg01_feature_transform.py
+    params:
+    - feature_transform
+    outs:
+    - stages/X.csv
+    - stages/feature_transform_pipeline.pkl
+    - stages/y.csv
+  splitting:
+    cmd: python source/stg02_splitting.py --config=params.yaml
+    deps:
+    - source/stg02_splitting.py
+    - stages/X.csv
+    - stages/y.csv
+    params:
+    - splitting
+    outs:
+    - stages/X_test.csv
+    - stages/X_train.csv
+    - stages/y_test.csv
+    - stages/y_train.csv
+  model_training:
+    cmd: python source/stg03_model_training.py --config=params.yaml
+    deps:
+    - source/stg03_model_training.py
+    - stages/X_train.csv
+    - stages/y_train.csv
+    params:
+    - model
+    outs:
+    - stages/model.pkl
+  model_testing:
+    cmd: python source/stg04_model_testing.py --config=params.yaml
+    deps:
+    - source/stg04_model_testing.py
+    - stages/X_test.csv
+    - stages/model.pkl
+    - stages/y_test.csv
+    params:
+    - test
+    metrics:
+    - stages/metrics.json

@@ -1,0 +1,37 @@
+{% extends "template.html" %}
+{% block conteudo %}
+
+
+<form class="form-signin">
+  <input type="hidden" name="proxima" value="{{ proxima or url_for('index') }}">
+  <div class="text-center mb-4">
+    <img class="mb-4 img-responsive" src="{{ url_for('index', filename = 'img/LogoG1.png') }}" alt="" width="320">
+    <!-- <h1 class="h3 mb-3 font-weight-normal">{{titulo}}</h1> -->
+
+  </div>
+
+  <div class="form-label-group">
+    <a class="btn btn-lg btn-primary btn-block" type="button" href="{{url_for('index')}}">Agenda</a>
+    <!-- <label for="inputUser">Usuario</label> -->
+  </div>
+
+  <div class="form-label-group">
+    <a class="btn btn-lg btn-primary btn-block" type="button" href="{{url_for('index')}}">Clientes</a>
+    <!-- <label for="inputPassword">Senha</label> -->
+  </div>
+
+
+  <!--   <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" value="remember-me"> Remember me
+    </label>
+  </div> -->
+
+  <a class="btn btn-lg btn-primary btn-block" type="button" href="{{url_for('index')}}">Entrar</a>
+  <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2020</p>
+</form>
+
+<!-- 
+<iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23f5f5f5&amp;ctz=America%2FSao_Paulo&amp;src=ZHNtc2RhZDhpZ2NrY3Jub25zN2hmMHQ0bWdAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%23D81B60&amp;color=%23009688&amp;showTitle=0&amp;showNav=0&amp;showDate=1&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+ -->
+{% endblock %}
